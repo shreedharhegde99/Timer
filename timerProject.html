@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timer</title>
+    <style type="text/css">
+      div {
+        /* border: solid black 1px; */
+        border-radius: 10px;
+      }
+      #container {
+        margin-top: 50px;
+        margin-left: 50px;
+        width: 600px;
+        height: 600px;
+        background-color: rgb(49, 165, 219);
+        border: solid 1px;
+      }
+      #border {
+        margin-top: 60px;
+        margin-left: 60px;
+        height: 80%;
+        width: 80%;
+        background-color: white;
+        border: solid 1px;
+      }
+      #timer_head {
+        color: rgb(255, 51, 0);
+        padding-top: 50px;
+        font-size: 50px;
+        text-align: center;
+        font-weight: bolder;
+        height: 100px;
+      }
+
+      .display {
+        display: flex;
+        flex-direction: row;
+        margin: 10px 55px;
+        padding: 20px;
+        height: 100px;
+      }
+      .display > div {
+        font-size: 60px;
+      }
+      .button_section {
+        height: 100px;
+      }
+      .button_section > div {
+        height: 50px;
+        width: 300px;
+        margin: 5px 80px;
+
+        padding: 20px;
+      }
+      .btn {
+        width: 100px;
+        font-size: 15px;
+        font-weight: bolder;
+        margin-left: 20px;
+        padding: 10px;
+
+        background-color: rgba(0, 0, 0, 0.699);
+        border-radius: 5px;
+        background-color: white;
+      }
+      .start {
+        color: rgb(27, 124, 216);
+      }
+      .start:hover {
+        color: white;
+        background-color: rgb(27, 124, 216);
+      }
+      .reset:hover {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="border">
+        <div id="timer_head">TIMER</div>
+        <div class="timer_cont">
+          <div class="display">
+            <div id="hours" class="value">00</div>
+            <div>h:</div>
+            <div id="minutes" class="value">00</div>
+            <div>m:</div>
+            <div id="seconds" class="value">00</div>
+            <div>s</div>
+          </div>
+        </div>
+        <div class="button_section">
+          <div>
+            <button class="btn start">START</button>
+            <!-- <button class="btn stop">STOP</button> -->
+            <button class="btn reset">RESET</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- javascript  -->
+    <script type="text/javascript">
+      window.addEventListener("load", function () {
+        let start = document.querySelector(".start");
+        start.addEventListener("click", timerStart);
+
+        let reset = document.querySelector(".reset");
+        reset.addEventListener("click", timerResest);
+      });
+
+      let seconds = document.getElementById("seconds");
+      let minutes = document.getElementById("minutes");
+      let hours = document.getElementById("hours");
+
+      var start = document.querySelector(".start");
+      var startTimer;
+      var isRunning = false;
+      var second = 0;
+      var minute = 0;
+      var hour = 0;
+      var zero = "0";
+      function timerStart() {
+        if (!isRunning) {
+          startTimer = setInterval(() => {
+            second++;
+            // setting minutes
+            if (second == 60) {
+              second = 0;
+              minute++;
+              if (minute == 60) {
+                minute = 0;
+                hour++;
+                if (Number(hours.textContent) < 9) {
+                  hours.textContent = `${zero}${hour}`;
+                } else {
+                  hours.textContent = `${hour}`;
+                }
+              }
+              if (Number(minutes) == 0) {
+                minutes.textContent = "00";
+              } else if (Number(minutes.textContent) < 9) {
+                minutes.textContent = `${zero}${minute}`;
+              } else {
+                minutes.textContent = `${minute}`;
+              }
+            }
+            // setting seconds
+            Number(seconds.textContent) < 9
+              ? (seconds.textContent = `${zero}${second}`)
+              : (seconds.textContent = `${second}`);
+            // console.log(seconds.textContent);
+          }, 1000);
+          isRunning = true;
+          start.textContent = "STOP";
+        } else {
+          console.log("hello");
+          clearInterval(startTimer);
+          isRunning = false;
+          start.textContent = "RESUME";
+        }
+      }
+
+      function timerResest() {
+        var display = document.querySelectorAll(".value");
+        for (var i = 0; i < display.length; i++) {
+          display[i].textContent = "00";
+          second = 0;
+          minute = 0;
+          hour = 0;
+        }
+      }
+    </script>
+  </body>
+</html>
